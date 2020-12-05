@@ -1,0 +1,142 @@
+---
+title: "__Vehicle Data Analysis Project__"
+author: "SAM BUI"
+date: "04/12/2020"
+output: pdf_document
+---
+```{r, include=FALSE}
+#list of library needed:
+library(ggiraphExtra)
+library(devtools)
+library(ggeffects)
+library(tidyverse)
+library(caret)
+library(psych)
+library(car)
+```
+
+###__Abstract:__
+
+|    On this project we will use 
+
+###  __Introduction__
+
+|       Vehicles are one of the important components of human life all around the world. With individual buyers and seller, selling price often gets people attention in the first place. Now the majority of people, as both buyers or sellers, often question what makes a significant impact on the selling price of all the vehicles. Does the amount of kilometers driven of a vehicle can affect its selling price. We also wonder if we have all the data that relate to vehicles, how accurate we can predict the selling price for the short run.
+
+###  __Data	Description:__
+
+|    The whole data set will contain one response variable and six predicting variables with a total of 8129 observations. Several observations will have similar names but they are different in some criteria The response variable is the selling price. The six predictors are year, kilometers driven (km_driven), fuel, seller type, transmission, and owner. In the predictors, we have 4 quantitative variables and they are fuel, seller type, transmission, and owner. We will summarize the whole dataset to get an overview of the data.
+
+```{r, warning=FALSE, echo=FALSE}
+car.data<- read.csv(file = "C:\\Users\\SAM\\OneDrive\\Desktop\\STAT350\\Project\\CAR DETAILS FROM CAR DEKHO.csv"
+                   ,header = TRUE
+                   ,sep = ',',)
+head(car.data)
+#summary(car.data)
+```
+
+We also want to see if there is an overall relationship between all the variable in the dataset.
+```{r,warning=FALSE, echo=FALSE}
+# " ,warning=FALSE, echo=FALSE" put after the {r,...}
+pairs(car.data) #_ delete the '#' for the final output.
+```
+
+By observing the plot above, we can see that selling price has a positive linear relationship with year and negative linaer relationship with km_driven. Others variable are quantitative variable so their plot is likely ambiguous.
+
+###  __Methods:__
+
+_1.Multiple Linear Regression (MLR):__
+
+|       Linear regression model is a common model that helps analysts determine whether a predictor can have a significant impact on a response variable. Firstly, we express the simple linear regression model as $Y = \beta. X + \epsilon$ where $Y, X$ represents the response variable and the predictor, respectively. The $\beta$ represents the coefficient of the equation and $\epsilon$ represents the error which the equation cannot cover. But since datasets often contain multiple predictors so we have to expand our simple model into a Multiple Linear Regression Model. We express MLR as follow:
+$$
+  Y = \beta_0 + \beta_1.X_1 + \beta_2.X_2 + ...+ \beta_n.X_n + \epsilon
+$$
+
+The figure we will look at is the $R^2$ and $p-value$. The higher in $R^2$, the more data which the model can cover. We also consider how small the $p-value$ is. If the $p-value$ is less than the significant level ($\alpha = 0.05$), then we can conclude that there is a significant relationship between the predictor and the response variable. The interpretation of $R^2$ in multiple linear regression is still the same as in SLR. But we will consider the more relevant figure which the adjusted $R^2$. The adjusted $R^2$ can be computed as:
+
+\begin{equation}
+   {R^2_{adj}} = 1 - (1 - {R^2}) \frac{n - 1}{n - p - 1}
+\end{equation}
+
+__2.Variable Tranformation:__
+
+|       During the process of plotting the data, we often observe several relationships between two variables that are not closely linear. By adjusting our model, we expect a new model will be appeared to be more linear than the previous model. Let our first model be $Y = \beta_0 + \beta_1.X_1 +\beta_2.X_2 + \epsilon$. After plotting the model out, we observe that the distribution of the observation is quite linear so we want a new model that will appear to be more linear than the first model. we will create a new variable which is $W = log(Y)$ and $Z = log(X_1)$. Our new model will be as following:
+$$
+    W = b_0 + b_1.Z + b_2X_2 + \epsilon
+$$
+
+__3.Cross Validation:__
+
+|      After assigning all predicting variables into our model, we are interested in investigating the prediction performance of the model. Since there are difficulties in finding a new dataset so we decide to use some of the original data to predict the rest of the data. The method we will use in this section is data splitting. The procedure is to split the original data into two separate parts which are called the training sample and test sample. This technique is also called cross-validation. After the prediction process, we will compute the $R^2_{prediction}$. If the $R^2_{prediction}$ is above 0.8, then we know that our model is likely to be a good predictor for new observations.
+
+
+###__Results:__
+
+_1. The relationship between the selling price with all predictors:_
+
+|      Vehicles are already part of human life. For people who had experienced in the vehicles market, then they should aware that different variables can have a huge impact on the selling price of the vehicles. So now, we will discuss when all our variable in the dataset is included in the model, how does our response variable will be affected. We fit all the variables into the model as below:
+
+```{r,warning=FALSE, echo=FALSE}
+rgln.allvar <- lm(selling_price ~  km_driven + year + fuel + seller_type + owner + transmission,
+                   data = car.data)
+summary(rgln.allvar)
+```
+
+We observe that base on the $p-value$ in the column $Pr(>|t|)$, the variable year, km_driven, fuel, and seller type are all relatively less than 0.05 which implies that they have a significant impact on our model. The $p-value$ in this column also present how significant a variable has on the fitted model with the condition that all others variable are included in the model. For instance, we could claim that seller_type is significant to our response variable while the rest of the predictors are included in the model. Next, we also observe that the Adjusted $R^2$ is 0.4593 which illustrates that approximately 46% of the variability in demand is accounted for by the straight_line fit to the selling price.
+
+|     In practical point of view, we observe that kilomiters driven variable has a lowest negative coefficient. This shows that as more kilomiters a vehicles has driven, the more decrease in the its selling price. Coming before km_driven, we see that transmission_manual also have a negative slopes which are very close to km_driven's coefficient. This implies that as the vehicle has a high selling price, the buyers will prefer transmission automatic instead of manual.We also see the quantitative variable selle_type has a impressived outcome. The higher selling price that a vehicle has, the less likely buyer want to purchase from a individual and mostly likely prefer purchasing from a trustworthy company.
+
+|     After having a general view of how some variable have significant impact on our model, we also discuss about how our predictive performance by using cross validation.
+
+```{r,warning=FALSE, echo=FALSE}
+data.ctrl <- trainControl(method = "cv", number = 6)
+model.caret <- train(selling_price ~ year + km_driven + seller_type + fuel + owner + transmission,
+                     data = car.data,
+                     trControl = data.ctrl,
+                     method = "lm",
+                     na.action = na.pass)
+model.caret$results
+```
+|     We observe the $R^2$ is almost stay the same as the $R^2$ from our above summary. We also observe large Root Mean Square Error and large Maximun Absolute Error due to the scale of the selling price.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
