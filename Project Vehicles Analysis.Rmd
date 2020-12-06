@@ -4,6 +4,17 @@ author: "SAM BUI"
 date: "04/12/2020"
 output: pdf_document
 ---
+
+
+__Abstract:__
+
+|      In this project, we discuss the relationships between the selling price of vehicles with different variables. We use the data in a vehicle data collection file to analyze the relationship between selling price with all variables; selling price with year, seller type, and finally, selling price with year, kilometer drove. We also discuss different perspectives from different types of people in the vehicle industry base on those relationships. During the analysis, we will use different methods such as multiple linear regression models, variable transformation, and cross-validation to help us analyze the dataset. Two out of three models can cover a decent amount of data and show different variables have significant impacts on our models.
+ 
+__Introduction__
+
+|       Vehicles are one of the important components of human life all around the world. With individual buyers and seller, selling price often gets people attention in the first place. Now the majority of people, as both buyers or sellers, often question what makes a significant impact on the selling price of all the vehicles. Does the amount of kilometers driven of a vehicle can affect its selling price. We also wonder if we have all the data that relate to vehicles, how accurate we can predict the selling price for the short run. In this project, we will discuss as well as analysis different methods to approach these huge dataset.
+
+__Data	Description:__
 ```{r, include=FALSE}
 #list of library needed:
 library(ggiraphExtra)
@@ -14,16 +25,6 @@ library(caret)
 library(psych)
 library(car)
 ```
-
-__Abstract:__
-
-|    On this project we will use 
-
-__Introduction__
-
-|       Vehicles are one of the important components of human life all around the world. With individual buyers and seller, selling price often gets people attention in the first place. Now the majority of people, as both buyers or sellers, often question what makes a significant impact on the selling price of all the vehicles. Does the amount of kilometers driven of a vehicle can affect its selling price. We also wonder if we have all the data that relate to vehicles, how accurate we can predict the selling price for the short run.
-
-__Data	Description:__
 
 |    The whole data set will contain one response variable and six predicting variables with a total of 8129 observations. Several observations will have similar names but they are different in some criteria The response variable is the selling price. The six predictors are year, kilometers driven (km_driven), fuel, seller type, transmission, and owner. In the predictors, we have 4 quantitative variables and they are fuel, seller type, transmission, and owner. We will summarize the whole dataset to get an overview of the data.
 
@@ -123,7 +124,6 @@ _3. Relationship between Kilometer Driven, year and Selling price:_
 
 ```{r,warning=FALSE, echo=FALSE}
 sel <- lm(log(selling_price) ~ log(km_driven) + year, data = car.data)
-summary(sel)
 ggplot(car.data,aes(x=log(selling_price),y=log(km_driven),color=year))+
   geom_point()+
   stat_smooth(method="lm",se=TRUE)
@@ -148,7 +148,6 @@ train_sample.km = car.data[train_sample, ]
 test_sample.km = car.data[-train_sample, ]
 
 train.km <- lm(log(selling_price) ~ log(km_driven) + year, data = train_sample.km)
-summary(train.km)
 pred.km2 <- predict(train.km, test_sample.km)
 plot(pred.km2,log(test_sample.km$selling_price),
      xlab = "predicted values km2",
@@ -172,6 +171,7 @@ __Conclusion:__
 |   We discuss three different relationships from three different perspectives. Our discussion moves from the perspective of experienced individuals in the vehicle industry to a new vehicle buyer perspective and then ends up in a new vehicle seller point of view. In general, all the models show us how significant a variable can affect our response variable which is the selling price. The first model and the third model can cover a decent amount of our dataset while the second model does not cover our dataset very well. None of our models have good prediction performance which shows us that we need more data or observations in order to improve our model. These three models also help viewers, buyers, and sellers have a general understanding of what they should expect the selling price when they are involved in the vehicle industry.
 
 __Appendix:__
+
 |    All the data and code are embedded during the analysis.
 
 
