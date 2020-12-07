@@ -60,7 +60,9 @@ __Methods:__
 _1.Multiple Linear Regression (MLR):_
 
 |       Linear regression model is a common model that helps analysts determine whether a predictor can have a significant impact on a response variable. Firstly, we express
-the simple linear regression model as $Y = \beta. X + \epsilon$ where $Y, X$ represents the response variable and the predictor, respectively. The $\beta$ represents the coefficient of the equation and $\epsilon$ represents the error which the equation cannot cover. But since datasets often contain multiple predictors so we have to expand our simple model into a Multiple Linear Regression Model. We express MLR as follow:
+the simple linear regression model as $Y = \beta. X + \epsilon$ where $Y, X$ represents the response variable and the predictor, respectively. The $\beta$ represents the
+coefficient of the equation and $\epsilon$ represents the error which the equation cannot cover. But since datasets often contain multiple predictors so we have to expand our
+simple model into a Multiple Linear Regression Model. We express MLR as follow:
 $$
   Y = \beta_0 + \beta_1.X_1 + \beta_2.X_2 + ...+ \beta_n.X_n + \epsilon
 $$
@@ -78,7 +80,8 @@ _2.Variable Tranformation:_
 
 |       During the process of plotting the data, we often observe several relationships between two variables that are not closely linear. By adjusting our model, we expect
 a new model will be appeared to be more linear than the previous model. Let our first model be $Y = \beta_0 + \beta_1.X_1 +\beta_2.X_2 + \epsilon$. After plotting the model
-out, we observe that the distribution of the observation is quite linear so we want a new model that will appear to be more linear than the first model. we will create a new variable which is $W = log(Y)$ and $Z = log(X_1)$. Our new model will be as following:
+out, we observe that the distribution of the observation is quite linear so we want a new model that will appear to be more linear than the first model. we will create a new 
+variable which is $W = log(Y)$ and $Z = log(X_1)$. Our new model will be as following:
 $$
     W = b_0 + b_1.Z + b_2X_2 + \epsilon
 $$
@@ -88,7 +91,8 @@ _3.Cross Validation:_
 |      After assigning all predicting variables into our model, we are interested in investigating the prediction performance of the model. Since there are difficulties in 
 finding a new dataset so we decide to use some of the original data to predict the rest of the data. The method we will use in this section is data splitting. The procedure
 is to split the original data into two separate parts which are called the training sample and test sample. This technique is also called cross-validation. After the 
-prediction process, we will compute the $R^2_{prediction}$. If the $R^2_{prediction}$ is above 0.8, then we know that our model is likely to be a good predictor for new observations.
+prediction process, we will compute the $R^2_{prediction}$. If the $R^2_{prediction}$ is above 0.8, then we know that our model is likely to be a good predictor for new 
+observations.
 
 
 __Results:__
@@ -106,7 +110,8 @@ summary(rgln.allvar)
 ```
 
 We observe that base on the $p-value$ in the column $Pr(>|t|)$, the variable year, km_driven, fuel, and seller type are all relatively less than 0.05 which implies that 
-they have a significant impact on our model. The $p-value$ in this column also present how significant a variable has on the fitted model with the condition that all others variable are included in the model. For instance, we could claim that seller_type is significant to our response variable while the rest of the predictors are included in 
+they have a significant impact on our model. The $p-value$ in this column also present how significant a variable has on the fitted model with the condition that all others
+variable are included in the model. For instance, we could claim that seller_type is significant to our response variable while the rest of the predictors are included in 
 the model. Next, we also observe that the Adjusted $R^2$ is 0.4593 which illustrates that approximately 46% of the variability in demand is accounted for by the straight 
 line fit to the selling price.
 
@@ -136,7 +141,8 @@ _2. The relationship between the selling price with year and seller type predict
 discuss many variables have different impacts on the selling price but that discussion might be suitable for people who are in the vehicles industry for long enough. With 
 a new buyer, they might find quite an amount of difficulties to approach that discussion. So if we look at a perspective of a buyer, especially for people with little 
 experience in the vehicle industry, the most concerns that grab people's attention mostly likely be the age of the car and which seller should they approach.  He/she may 
-want a recent year new car or a decent old car with a reasonable price and whether they put quality is the priority. That why we will discuss if two predictors: year and seller_type will have a significant impact on the selling price. Now, we fit the two variables: year and seller_type into the model. Since we have a continuous variable 
+want a recent year new car or a decent old car with a reasonable price and whether they put quality is the priority. That why we will discuss if two predictors: year and
+seller_type will have a significant impact on the selling price. Now, we fit the two variables: year and seller_type into the model. Since we have a continuous variable 
 (year) and a quantitative variable (seller_type) in our model, we set up our model equation differently. Our model can be express as $Y = \beta_0 + \beta_1.X_1 +\beta_2.X2 
 + \beta_3.X_1.X_2 + \epsilon$. we will take a look at the overall diagram for the relationship between year, seller_type, and selling price:
 
@@ -149,9 +155,11 @@ ggPredict(fit.ysller,interactive=FALSE)
 By observing the diagram, the majority of color is green which implies that the majority in seller type likely individual. This is reasonable since when buying from an 
 individual, it's easier to negotiate the selling price. We also see that the slope of the blue line for Trustmarker Dealer is around 30 degrees and it is much higher 
 than the slope of the two others. This tells us that as the age of the vehicles decreases, the selling price in Trustmark Dealer rises more significantly than comparing 
-the selling price of individual and dealer. This is a situation when the buyers want to purchase cars from a company with trustworthy service such as car insurance, car equipment, etc. FOr a more closer look, we can see that when 1 unit of year increase, there will be an increase of 279,507.68 in selling price of Trustmark Dealer. With 
+the selling price of individual and dealer. This is a situation when the buyers want to purchase cars from a company with trustworthy service such as car insurance, car
+equipment, etc. FOr a more closer look, we can see that when 1 unit of year increase, there will be an increase of 279,507.68 in selling price of Trustmark Dealer. With 
 Dealer and Individual, the increase are only 89503.53 and 45,697.62 in amount of price,respectively. This comparison show that Trustmark worth huge amount of money.Next, 
-We also observe that Dealer has some outliner points represent some exclusive vehicles in the market. But overall, those Outliners does not change our linear line. After discussing the diagram, we will observe how the statistical figure will show us. Below is the summary of the fitted model:
+We also observe that Dealer has some outliner points represent some exclusive vehicles in the market. But overall, those Outliners does not change our linear line. After
+discussing the diagram, we will observe how the statistical figure will show us. Below is the summary of the fitted model:
 
 ```{r,warning=FALSE, echo=FALSE}
 summary(fit.ysller)
@@ -166,7 +174,8 @@ _3. Relationship between Kilometer Driven, year and Selling price:_
 |     We discuss how 2 variables: year and seller_type will affect the selling price from the perspective of the buyers. Next, we look at the perspective of a new seller.
 This is the type of person who has less experience in negotiating and selling their first vehicles. For the new sellers, they often adjust their selling price of the 
 vehicles based on how old is the vehicles and how many kilometers have driven. For the purpose of helping sellers have a basic understanding of how a reasonable selling 
-price should be, we discuss how selling price change when there are only 2 predictors in our model; that is year and kilometers driven. Before we jump into plotting the relationship between these 3 variables, we process a variable transformation. We will fit $log(selling price)$ with $log(kmdriven) + year$. Our new diagrams will be below:
+price should be, we discuss how selling price change when there are only 2 predictors in our model; that is year and kilometers driven. Before we jump into plotting the
+relationship between these 3 variables, we process a variable transformation. We will fit $log(selling price)$ with $log(kmdriven) + year$. Our new diagrams will be below:
 
 ```{r,warning=FALSE, echo=FALSE}
 sel <- lm(log(selling_price) ~ log(km_driven) + year, data = car.data)
@@ -224,7 +233,8 @@ __Conclusion:__
 industry to a new vehicle buyer perspective and then ends up in a new vehicle seller point of view. In general, all the models show us how significant a variable can
 affect our response variable which is the selling price. The first model and the third model can cover a decent amount of our dataset while the second model does not 
 cover our dataset very well. None of our models have good prediction performance which shows us that we need more data or observations in order to improve our model. 
-These three models also help viewers, buyers, and sellers have a general understanding of what they should expect the selling price when they are involved in the vehicle industry.
+These three models also help viewers, buyers, and sellers have a general understanding of what they should expect the selling price when they are involved in the vehicle
+industry.
 
 __Appendix:__
 
